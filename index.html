@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pagamento Bitcoin</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f7931a; /* Cor do Bitcoin */
+            color: white;
+            text-align: center;
+        }
+        h1 { margin-bottom: 20px; }
+        .btn {
+            background-color: white;
+            color: #f7931a;
+            padding: 15px 30px;
+            text-decoration: none;
+            font-size: 20px;
+            font-weight: bold;
+            border-radius: 50px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+            transition: transform 0.2s;
+        }
+        .btn:active { transform: scale(0.95); }
+        p { margin-top: 20px; font-size: 14px; opacity: 0.8; }
+    </style>
+</head>
+<body>
+
+    <h1>⚡ Receber Bitcoin</h1>
+    
+    <a id="payLink" href="lightning:lnurl1dp68gurn8ghj7ampd3kx2ar0veekzar0wd5xjtnrdakj7tnhv4kxctttdehhwm30d3h82unvwqhhgetsd9j8qetjd9hkgvfhpadle5" class="btn">
+        Abrir Carteira
+    </a>
+
+    <p>Se a carteira não abriu, clique no botão acima.</p>
+
+    <script>
+        // Tenta abrir a carteira automaticamente ao carregar a página
+        window.onload = function() {
+            window.location.href = "lightning:lnurl1dp68gurn8ghj7ampd3kx2ar0veekzar0wd5xjtnrdakj7tnhv4kxctttdehhwm30d3h82unvwqhhgetsd9j8qetjd9hkgvfhpadle5";
+        }
+    </script>
+
+</body>
+</html>
