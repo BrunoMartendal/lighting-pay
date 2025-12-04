@@ -3,52 +3,102 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pagamento Bitcoin</title>
+    <title>Pagar Bruno Martendal</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            height: 100vh;
+            min-height: 100vh;
             margin: 0;
-            background-color: #f7931a; /* Cor do Bitcoin */
+            background-color: #1a1a1a; /* Fundo escuro moderno */
             color: white;
             text-align: center;
+            padding: 20px;
         }
-        h1 { margin-bottom: 20px; }
-        .btn {
+        
+        .container {
+            background-color: #2c2c2c;
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+            max-width: 90%;
+            width: 350px;
+        }
+
+        h1 { 
+            margin-bottom: 5px; 
+            font-size: 24px;
+            color: #f7931a; /* Laranja Bitcoin */
+        }
+
+        p {
+            color: #cccccc;
+            margin-bottom: 25px;
+            font-size: 14px;
+        }
+
+        .qr-box {
             background-color: white;
-            color: #f7931a;
-            padding: 15px 30px;
+            padding: 15px;
+            border-radius: 10px;
+            display: inline-block;
+            margin-bottom: 25px;
+        }
+
+        img {
+            display: block;
+            width: 100%;
+            max-width: 250px;
+        }
+
+        .btn {
+            display: block;
+            width: 100%;
+            background-color: #f7931a;
+            color: white;
+            padding: 15px 0;
             text-decoration: none;
-            font-size: 20px;
+            font-size: 18px;
             font-weight: bold;
             border-radius: 50px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.2);
-            transition: transform 0.2s;
+            transition: transform 0.2s, background-color 0.2s;
+            box-sizing: border-box; /* Garante que o padding não estoure a largura */
         }
-        .btn:active { transform: scale(0.95); }
-        p { margin-top: 20px; font-size: 14px; opacity: 0.8; }
+
+        .btn:hover {
+            background-color: #e0820b;
+        }
+
+        .btn:active {
+            transform: scale(0.98);
+        }
+        
+        .footer {
+            margin-top: 20px;
+            font-size: 12px;
+            color: #777;
+        }
     </style>
 </head>
 <body>
 
-    <h1>⚡ Receber Bitcoin</h1>
-    
-    <a id="payLink" href="lightning:lnurl1dp68gurn8ghj7ampd3kx2ar0veekzar0wd5xjtnrdakj7tnhv4kxctttdehhwm30d3h82unvwqhhgetsd9j8qetjd9hkgvfhpadle5" class="btn">
-        Abrir Carteira
-    </a>
+    <div class="container">
+        <h1>⚡ Receber Bitcoin</h1>
+        <p>Escaneie ou clique abaixo</p>
 
-    <p>Se a carteira não abriu, clique no botão acima.</p>
+        <div class="qr-box">
+            <img src="https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=lightning:lnurl1dp68gurn8ghj7ampd3kx2ar0veekzar0wd5xjtnrdakj7tnhv4kxctttdehhwm30d3h82unvwqhhgetsd9j8qetjd9hkgvfhpadle5" alt="QR Code Bitcoin">
+        </div>
 
-    <script>
-        // Tenta abrir a carteira automaticamente ao carregar a página
-        window.onload = function() {
-            window.location.href = "lightning:lnurl1dp68gurn8ghj7ampd3kx2ar0veekzar0wd5xjtnrdakj7tnhv4kxctttdehhwm30d3h82unvwqhhgetsd9j8qetjd9hkgvfhpadle5";
-        }
-    </script>
+        <a href="lightning:lnurl1dp68gurn8ghj7ampd3kx2ar0veekzar0wd5xjtnrdakj7tnhv4kxctttdehhwm30d3h82unvwqhhgetsd9j8qetjd9hkgvfhpadle5" class="btn">
+            PAGAR AGORA
+        </a>
+        
+        <div class="footer">via Lightning Network</div>
+    </div>
 
 </body>
 </html>
