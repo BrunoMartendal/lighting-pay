@@ -30,13 +30,13 @@
             border: 1px solid #30363d;
             display: flex;
             flex-direction: column;
-            align-items: center; /* Isso garante que tudo fique centralizado */
+            align-items: center;
         }
 
         .avatar-img {
             width: 80px;
             height: 80px;
-            margin-bottom: 10px;
+            margin-bottom: 15px;
             animation: float 6s ease-in-out infinite;
         }
 
@@ -46,37 +46,41 @@
             100% { transform: translateY(0px); }
         }
 
-        h1 { margin: 5px 0; font-size: 20px; font-weight: 600; color: #e6edf3; }
+        h1 { margin: 0 0 15px 0; font-size: 20px; font-weight: 600; color: #e6edf3; }
         
         /* Preço do Bitcoin */
         .price-ticker {
             background-color: #21262d;
             padding: 8px 15px;
             border-radius: 50px;
-            font-size: 13px;
+            font-size: 14px;
+            font-weight: bold;
             color: #7ee787;
-            margin-bottom: 20px;
+            margin-bottom: 25px;
             display: inline-block;
             border: 1px solid #30363d;
             font-family: monospace;
-            min-width: 150px; /* Garante tamanho fixo para não "pular" */
+            min-width: 160px;
         }
 
+        /* QR Code Centralizado */
         .qr-box {
             background-color: white;
-            padding: 10px;
-            border-radius: 10px;
-            display: flex;       /* Mudança para centralizar */
+            padding: 12px;
+            border-radius: 12px;
+            display: flex;
             justify-content: center;
             align-items: center;
-            margin-bottom: 20px;
-            margin-left: auto;   /* Força centro */
-            margin-right: auto;  /* Força centro */
+            margin-bottom: 25px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
         }
-        img.qr { display: block; width: 100%; max-width: 200px; }
+        img.qr { display: block; width: 220px; height: 220px; }
 
         .btn-pay {
-            display: block;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
             width: 100%;
             background: linear-gradient(135deg, #f7931a, #e0820b);
             color: #000;
@@ -87,7 +91,7 @@
             border-radius: 8px;
             margin-bottom: 20px;
             transition: opacity 0.2s;
-            box-sizing: border-box; /* Previne que o botão estoure a largura */
+            box-sizing: border-box;
         }
         .btn-pay:hover { opacity: 0.9; }
 
@@ -105,10 +109,10 @@
             border: 1px solid #30363d;
             width: 100%;
             box-sizing: border-box;
-            word-break: break-all; /* Quebra o email se for longo */
+            word-break: break-all;
         }
         
-        .divider { border-top: 1px solid #30363d; margin: 20px 0; width: 100%; }
+        .divider { border-top: 1px solid #30363d; margin: 10px 0 20px 0; width: 100%; opacity: 0.5; }
         
         .wallet-links p { font-size: 12px; color: #8b949e; margin-bottom: 10px; }
         .store-btns { display: flex; justify-content: center; gap: 10px; }
@@ -122,7 +126,7 @@
             transition: background 0.2s;
             display: flex;
             align-items: center;
-            gap: 5px;
+            gap: 6px;
         }
         .store-btn:hover { background: #8b949e; color: black; }
 
@@ -133,10 +137,10 @@
     <div class="container">
         <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/46/Bitcoin.svg/1200px-Bitcoin.svg.png" alt="Bitcoin Logo" class="avatar-img">
         
-        <h1>Pagamento Lightning</h1>
+        <h1>Pagamento Bitcoin</h1>
         
         <div class="price-ticker" id="btc-price">
-            Carregando...
+            <i class="fas fa-sync fa-spin"></i> Carregando...
         </div>
 
         <div class="qr-box">
@@ -148,8 +152,7 @@
         </a>
 
         <div class="copy-area" onclick="copiarEndereco()">
-            <span id="lightning-address">tepidperiod17@walletofsatoshi.com</span>
-            <i class="fas fa-copy"></i>
+            <span id="lightning-address">tepidperiod17@walletofsatoshi.com</span> <i class="fas fa-copy"></i>
         </div>
 
         <div class="divider"></div>
@@ -164,37 +167,52 @@
     </div>
 
     <script>
-        // Nova API (CoinDesk) - Mais estável
+        // API da BINANCE (Mais robusta e não bloqueia)
         async function getPrice() {
+            const priceElement = document.getElementById('btc-price');
+            
             try {
-                const response = await fetch('https://api.coindesk.com/v1/bpi/currentprice.json');
+                // Tenta pegar da Binance
+                const response = await fetch('https://api.binance.com/api/v3/ticker/price?symbol=BTCUSDT');
                 const data = await response.json();
-                const price = data.bpi.USD.rate_float;
                 
-                // Formata para dólar (Ex: $ 95,400)
+                // Arredonda o preço
+                const price = parseFloat(data.price);
+                
+                // Formata com sifrão e vírgulas (Ex: $ 95,400)
                 const formattedPrice = new Intl.NumberFormat('en-US', {
                     style: 'currency',
                     currency: 'USD',
                     maximumFractionDigits: 0
                 }).format(price);
 
-                document.getElementById('btc-price').innerHTML = `1 BTC = ${formattedPrice}`;
+                priceElement.innerText = `1 BTC = ${formattedPrice}`;
+                
             } catch (error) {
-                console.error(error);
-                document.getElementById('btc-price').innerText = "1 BTC = 🌕"; // Fallback divertido
+                console.error("Erro ao buscar preço:", error);
+                // Fallback caso a API falhe, mostra apenas o texto
+                priceElement.innerText = "Bitcoin Lightning";
             }
         }
         
+        // Executa a função
         getPrice();
+
+        // Atualiza o preço a cada 30 segundos
+        setInterval(getPrice, 30000);
 
         function copiarEndereco() {
             const endereco = document.getElementById("lightning-address").innerText;
             navigator.clipboard.writeText(endereco).then(() => {
-                // Feedback visual simples ao copiar
-                const originalText = document.querySelector('.copy-area i').className;
-                document.querySelector('.copy-area i').className = "fas fa-check"; // Muda ícone para check
+                const icon = document.querySelector('.copy-area i');
+                const originalClass = icon.className;
+                
+                icon.className = "fas fa-check"; // Check verde
+                icon.style.color = "#7ee787";
+                
                 setTimeout(() => {
-                    document.querySelector('.copy-area i').className = "fas fa-copy"; // Volta
+                    icon.className = "fas fa-copy"; // Volta ao normal
+                    icon.style.color = ""; 
                 }, 2000);
             });
         }
